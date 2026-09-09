@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMockData } from '../../context/MockDataContext';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
-import { ArrowLeft, Phone, Mail, MapPin, Calendar, CreditCard, Clock, Activity, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Phone, Mail, MessageSquare } from 'lucide-react';
 import clsx from 'clsx';
 
 type TabType = 'overview' | 'bookings' | 'enquiries' | 'payments' | 'preferences' | 'activity';
@@ -11,7 +11,7 @@ type TabType = 'overview' | 'bookings' | 'enquiries' | 'payments' | 'preferences
 export const CustomerDetails = () => {
   const { customerId } = useParams<{ customerId: string }>();
   const navigate = useNavigate();
-  const { customers, bookings, enquiries, payments } = useMockData();
+  const { customers, bookings, payments } = useMockData();
 
   const [activeTab, setActiveTab] = useState<TabType>('overview');
 
@@ -22,7 +22,7 @@ export const CustomerDetails = () => {
   }
 
   const customerBookings = bookings.filter(b => b.customerId === customer.id);
-  const customerEnquiries = enquiries.filter(e => e.name.toLowerCase().includes(customer.name.toLowerCase()));
+
   const customerPayments = payments.filter(p => p.customerId === customer.id);
 
   const totalSpent = customer.totalSpent;

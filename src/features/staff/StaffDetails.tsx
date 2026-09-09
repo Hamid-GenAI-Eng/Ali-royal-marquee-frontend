@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMockData } from '../../context/MockDataContext';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
-import { ArrowLeft, Phone, Badge as BadgeIcon, Clock, Calendar, CheckCircle2, DollarSign } from 'lucide-react';
+import { ArrowLeft, Phone, Badge as BadgeIcon } from 'lucide-react';
 import clsx from 'clsx';
 
 type TabType = 'overview' | 'schedule' | 'events' | 'attendance' | 'leave' | 'payroll' | 'performance';

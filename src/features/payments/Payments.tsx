@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { SearchInput } from '../../components/ui/SearchInput';
@@ -10,7 +10,7 @@ import { useMockData } from '../../context/MockDataContext';
 import type { Payment } from '../../types';
 
 export const Payments = () => {
-  const { payments, customers, bookings } = useMockData();
+  const { payments, customers } = useMockData();
   const navigate = useNavigate();
   const location = useLocation();
   const showBack = location.state?.fromBusiness;
@@ -31,7 +31,7 @@ export const Payments = () => {
   };
 
   const getCustomer = (id: string) => customers.find(c => c.id === id);
-  const getBooking = (id: string) => bookings.find(b => b.id === id);
+
 
   const filteredData = useMemo(() => {
     let result = payments;

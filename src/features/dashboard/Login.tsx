@@ -10,7 +10,7 @@ export const Login = () => {
   const [email, setEmail] = useState('admin@aliroyalmarquee.com');
   const [password, setPassword] = useState('RoyalMarquee2024!');
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [] = useState(false);
   const [loginState, setLoginState] = useState<'idle' | 'loading' | 'success'>('idle');
 
   const handleRoleSelect = (selectedRole: Role) => {

@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DataGrid } from '../../components/ui/DataGrid';
 import type { ColumnDef } from '../../components/ui/DataGrid';
 import { Badge } from '../../components/ui/Badge';
-import { Drawer } from '../../components/ui/Drawer';
+// import { } from '../../components/ui/Drawer';
 import { PageHeader } from '../../components/ui/PageHeader';
-import { useMockData } from '../../context/MockDataContext';
+// import { } from '../../context/MockDataContext';
 import type { Package } from '../../types';
 export const PackagesMenu = () => {
   const navigate = useNavigate();
@@ -390,7 +390,7 @@ export const PackagesMenu = () => {
             data={filteredData}
             columns={columns}
             keyExtractor={(item) => item.id}
-            onRowClick={(item) => {}}
+            onRowClick={() => {}}
             sortColumn={sortColumn}
             sortDirection={sortDirection}
             onSort={handleSort}

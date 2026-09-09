@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMockData } from '../../context/MockDataContext';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
-import { ArrowLeft, Phone, Mail, MapPin, Truck, FileText, Activity, CreditCard, Star } from 'lucide-react';
+import { ArrowLeft, Phone, Truck, FileText, Star } from 'lucide-react';
 import clsx from 'clsx';
-import { useToast } from '../../context/ToastContext';
+// import { } from '../../context/ToastContext';
 
 type TabType = 'overview' | 'purchases' | 'payables' | 'services' | 'contracts' | 'performance' | 'activity';
 

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { SearchInput } from '../../components/ui/SearchInput';
@@ -258,8 +258,8 @@ export const Vendors = () => {
           <div className="flex justify-end gap-3">
             <Button variant="outline" onClick={() => setSelectedVendor(null)}>Close</Button>
             <Button variant="primary" onClick={() => {
+              navigate(`/app/vendors/${selectedVendor?.id}`);
               setSelectedVendor(null);
-              navigate(`/app/vendors/${selectedVendor.id}`);
             }}>Manage Vendor</Button>
           </div>
         }

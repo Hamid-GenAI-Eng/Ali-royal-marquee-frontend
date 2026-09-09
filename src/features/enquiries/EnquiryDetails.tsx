@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMockData } from '../../context/MockDataContext';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
-import { ArrowLeft, Phone, Mail, MapPin, Calendar, Users, Activity, MessageSquare, Briefcase, FileText, TrendingUp, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Phone, MapPin, Calendar, MessageSquare, Briefcase, FileText } from 'lucide-react';
 import clsx from 'clsx';
 import { useToast } from '../../context/ToastContext';
 
@@ -40,7 +40,7 @@ export const EnquiryDetails = () => {
   ];
 
   // Lead Scoring Mock
-  const isHot = enquiry.status === 'New' || enquiry.status === 'Follow-up';
+  const isHot = enquiry.status === 'Contacted' || enquiry.status === 'Qualified';
   const score = isHot ? 85 : 40;
   const estValue = 650000;
 

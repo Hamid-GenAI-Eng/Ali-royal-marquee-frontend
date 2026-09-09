@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { SearchInput } from '../../components/ui/SearchInput';
@@ -233,8 +233,8 @@ export const Inventory = () => {
           <div className="flex justify-end gap-3">
             <Button variant="outline" onClick={() => setSelectedItem(null)}>Close</Button>
             <Button variant="primary" onClick={() => {
+              navigate(`/app/inventory/${selectedItem?.id}`);
               setSelectedItem(null);
-              navigate(`/app/inventory/${selectedItem.id}`);
             }}>Manage Item</Button>
           </div>
         }

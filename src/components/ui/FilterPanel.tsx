@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
+import React, { } from 'react';
+
 import { Filter, X } from 'lucide-react';
 import { Button } from './Button';
 

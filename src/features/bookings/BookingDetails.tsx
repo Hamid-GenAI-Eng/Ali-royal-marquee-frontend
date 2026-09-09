@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMockData } from '../../context/MockDataContext';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
-import { ArrowLeft, MapPin, Calendar as CalendarIcon, Users, CreditCard, Receipt, FileText, Activity } from 'lucide-react';
+import { ArrowLeft, MapPin, Calendar as CalendarIcon, Users, Activity } from 'lucide-react';
 import clsx from 'clsx';
 
 type TabType = 'overview' | 'package' | 'menu' | 'addons' | 'payments' | 'documents' | 'event' | 'activity';

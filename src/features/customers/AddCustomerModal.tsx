@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from '../../components/ui/Modal';
 import { Input } from '../../components/ui/forms/Input';
 import { Select } from '../../components/ui/forms/Select';
-import { FormSection, FormActions } from '../../components/ui/forms/FormLayout';
+import { FormActions } from '../../components/ui/forms/FormLayout';
 import { useMockData } from '../../context/MockDataContext';
 import { useToast } from '../../context/ToastContext';
 

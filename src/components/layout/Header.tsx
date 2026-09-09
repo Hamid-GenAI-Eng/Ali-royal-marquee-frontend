@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { useMockData } from '../../context/MockDataContext';
 import { useNavigate } from 'react-router-dom';

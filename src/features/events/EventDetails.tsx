@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMockData } from '../../context/MockDataContext';
 import { Button } from '../../components/ui/Button';
@@ -13,7 +13,7 @@ export const EventDetails = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const navigate = useNavigate();
   const { events, bookings, customers, expenses, payments } = useMockData();
-  const { success } = useToast();
+  const { } = useToast();
 
   const [activeTab, setActiveTab] = useState<TabType>('overview');
 

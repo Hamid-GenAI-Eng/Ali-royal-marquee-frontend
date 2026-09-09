@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMockData } from '../../context/MockDataContext';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
-import { ArrowLeft, Box, Archive, AlertCircle, ShoppingCart, Activity } from 'lucide-react';
+import { ArrowLeft, Box } from 'lucide-react';
 import clsx from 'clsx';
 
 type TabType = 'overview' | 'movements' | 'reservations' | 'purchases' | 'wastage' | 'activity';

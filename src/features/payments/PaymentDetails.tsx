@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useMockData } from '../../context/MockDataContext';
 import { Button } from '../../components/ui/Button';
 import { Badge } from '../../components/ui/Badge';
-import { ArrowLeft, CreditCard, Calendar, Receipt, FileText, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CreditCard, Calendar } from 'lucide-react';
 import clsx from 'clsx';
 
 type TabType = 'receipt' | 'booking' | 'customer' | 'audit';

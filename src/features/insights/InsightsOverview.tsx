@@ -1,11 +1,11 @@
-import React from 'react';
+// import React from 'react';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip as RechartsTooltip, CartesianGrid, BarChart, Bar, Legend } from 'recharts';
 import { TrendingUp, Users, Calendar, DollarSign, ArrowUpRight } from 'lucide-react';
 import { useMockData } from '../../context/MockDataContext';
 
 export const InsightsOverview = () => {
-  const { bookings } = useMockData();
+  const { } = useMockData();
 
   const data = [
     { name: 'Jan', revenue: 4000000, bookings: 24, expenses: 2400000 },

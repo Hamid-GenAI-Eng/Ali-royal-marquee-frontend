@@ -1,9 +1,9 @@
-import React from 'react';
+// import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PageHeader } from '../../components/ui/PageHeader';
 import { Button } from '../../components/ui/Button';
-import { Badge } from '../../components/ui/Badge';
-import { TrendingUp, TrendingDown, DollarSign, Users, Calendar as EventIcon, AlertCircle, ArrowRight } from 'lucide-react';
+// import { } from '../../components/ui/Badge';
+import { TrendingUp, DollarSign, Users, Calendar as EventIcon, AlertCircle, ArrowRight } from 'lucide-react';
 import { useMockData } from '../../context/MockDataContext';
 
 export const BusinessOverview = () => {
