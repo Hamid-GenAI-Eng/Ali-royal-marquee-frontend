@@ -1,0 +1,299 @@
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useMockData } from '../../context/MockDataContext';
+import { Button } from '../../components/ui/Button';
+import { Badge } from '../../components/ui/Badge';
+import { ArrowLeft, MapPin, Calendar as CalendarIcon, Users, CreditCard, Receipt, FileText, Activity } from 'lucide-react';
+import clsx from 'clsx';
+
+type TabType = 'overview' | 'package' | 'menu' | 'addons' | 'payments' | 'documents' | 'event' | 'activity';
+
+export const BookingDetails = () => {
+  const { bookingId } = useParams<{ bookingId: string }>();
+  const navigate = useNavigate();
+  const { bookings, customers, events, payments } = useMockData();
+
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
+
+  const booking = bookings.find((b) => b.id === bookingId);
+  const customer = customers.find((c) => c.id === booking?.customerId);
+  const event = events.find((e) => e.bookingId === booking?.id);
+  const bookingPayments = payments.filter((p) => p.bookingId === booking?.id);
+
+  if (!booking || !customer) {
+    return <div className="p-8 text-center text-on-surface-variant">Booking not found.</div>;
+  }
+
+  const totalPaid = bookingPayments.reduce((sum, p) => sum + p.amount, 0);
+  const balance = booking.totalAmount - totalPaid;
+
+  const tabs: { id: TabType; label: string }[] = [
+    { id: 'overview', label: 'Overview' },
+    { id: 'package', label: 'Package & Pricing' },
+    { id: 'menu', label: 'Menu' },
+    { id: 'payments', label: 'Payments' },
+    { id: 'documents', label: 'Documents' },
+    { id: 'event', label: 'Linked Event' },
+    { id: 'activity', label: 'Activity' },
+  ];
+
+  return (
+    <div className="flex flex-col h-full bg-surface-container-lowest">
+      {/* HEADER SECTION */}
+      <div className="border-b border-outline-variant/30 bg-surface px-8 py-6">
+        <div className="flex items-center gap-2 text-sm text-on-surface-variant mb-4">
+          <button onClick={() => navigate('/app/bookings')} className="hover:text-primary transition-colors flex items-center gap-1">
+            <ArrowLeft className="w-4 h-4" /> Bookings
+          </button>
+          <span>/</span>
+          <span className="font-medium text-on-surface">{booking.id}</span>
+        </div>
+
+        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-4 mb-2">
+              <h1 className="text-3xl font-bold text-on-surface">{customer.name}</h1>
+              <Badge variant={booking.status === 'Confirmed' ? 'success' : 'neutral'} className="text-sm px-3 py-1">
+                {booking.status}
+              </Badge>
+              <Badge variant={balance <= 0 ? 'success' : 'warning'} className="text-sm px-3 py-1">
+                {balance <= 0 ? 'Fully Paid' : 'Payment Pending'}
+              </Badge>
+            </div>
+            <div className="flex items-center flex-wrap gap-4 text-on-surface-variant mt-3">
+              <div className="flex items-center gap-1.5"><CalendarIcon className="w-4 h-4" /> {booking.dateStr} ({booking.shift})</div>
+              <div className="flex items-center gap-1.5"><MapPin className="w-4 h-4" /> {booking.hall}</div>
+              <div className="flex items-center gap-1.5"><Users className="w-4 h-4" /> {booking.guests} Guests</div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <Button variant="primary" icon="edit">Edit Booking</Button>
+              <Button variant="secondary" icon="payments">Record Payment</Button>
+              <Button variant="outline" icon="receipt_long">Generate Invoice</Button>
+            </div>
+            <div className="flex items-center justify-end gap-3 text-sm">
+              <button className="text-primary hover:underline flex items-center gap-1">Reschedule</button>
+              <span className="text-outline-variant">•</span>
+              <button className="text-primary hover:underline flex items-center gap-1">Convert to Event</button>
+              <span className="text-outline-variant">•</span>
+              <button className="text-error hover:underline flex items-center gap-1">Cancel Booking</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* KPI CARDS */}
+      <div className="px-8 py-6 bg-surface-container-lowest border-b border-outline-variant/20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-surface border border-outline-variant/40 rounded-xl p-5 shadow-sm">
+            <div className="text-xs text-on-surface-variant uppercase tracking-wider font-semibold mb-1">Total Amount</div>
+            <div className="text-3xl font-currency-num font-bold text-on-surface">PKR {booking.totalAmount.toLocaleString()}</div>
+          </div>
+          <div className="bg-surface border border-outline-variant/40 rounded-xl p-5 shadow-sm relative overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-success"></div>
+            <div className="text-xs text-on-surface-variant uppercase tracking-wider font-semibold mb-1">Total Paid</div>
+            <div className="text-3xl font-currency-num font-bold text-success">PKR {totalPaid.toLocaleString()}</div>
+          </div>
+          <div className="bg-surface border border-outline-variant/40 rounded-xl p-5 shadow-sm relative overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+            <div className="text-xs text-on-surface-variant uppercase tracking-wider font-semibold mb-1">Balance Due</div>
+            <div className="text-3xl font-currency-num font-bold text-error">PKR {balance.toLocaleString()}</div>
+          </div>
+          <div className="bg-surface border border-outline-variant/40 rounded-xl p-5 shadow-sm">
+            <div className="text-xs text-on-surface-variant uppercase tracking-wider font-semibold mb-1">Booking Date</div>
+            <div className="text-3xl font-bold text-on-surface">{booking.createdAt}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* TABS NAVIGATION */}
+      <div className="px-8 border-b border-outline-variant/30 flex overflow-x-auto no-scrollbar">
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={clsx(
+              "px-6 py-4 font-medium text-sm transition-colors whitespace-nowrap border-b-2",
+              activeTab === tab.id 
+                ? "border-primary text-primary" 
+                : "border-transparent text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/30"
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* TAB CONTENT */}
+      <div className="flex-1 overflow-y-auto p-8">
+        {activeTab === 'overview' && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <section>
+                <h3 className="font-title-lg mb-4">Customer Details</h3>
+                <div className="bg-surface rounded-xl border border-outline-variant/40 p-5 space-y-4">
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-1 text-on-surface-variant text-sm">Name</div>
+                    <div className="col-span-2 font-medium">{customer.name}</div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-1 text-on-surface-variant text-sm">Phone</div>
+                    <div className="col-span-2 font-medium flex items-center gap-2">
+                      {customer.phone}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-1 text-on-surface-variant text-sm">Tier</div>
+                    <div className="col-span-2"><Badge>{customer.tier}</Badge></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+            
+            <div className="space-y-6">
+              <section>
+                <h3 className="font-title-lg mb-4">Schedule</h3>
+                <div className="bg-surface rounded-xl border border-outline-variant/40 p-5 space-y-4">
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-1 text-on-surface-variant text-sm">Date</div>
+                    <div className="col-span-2 font-medium">{booking.dateStr}</div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-1 text-on-surface-variant text-sm">Shift</div>
+                    <div className="col-span-2 font-medium">{booking.shift}</div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="col-span-1 text-on-surface-variant text-sm">Hall</div>
+                    <div className="col-span-2 font-medium">{booking.hall}</div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'package' && (
+          <div className="max-w-3xl space-y-6">
+            <h3 className="font-title-lg">Pricing Breakdown</h3>
+            <div className="bg-surface border border-outline-variant/40 rounded-xl overflow-hidden">
+              <table className="w-full text-left border-collapse">
+                <thead className="bg-surface-variant/30 text-on-surface-variant text-sm">
+                  <tr>
+                    <th className="p-4 font-medium">Item</th>
+                    <th className="p-4 font-medium text-right">Qty/Rate</th>
+                    <th className="p-4 font-medium text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-outline-variant/20">
+                  <tr>
+                    <td className="p-4">
+                      <div className="font-medium text-on-surface">Royal Gold Package</div>
+                      <div className="text-xs text-on-surface-variant mt-1">Includes Venue, Basic Decor, Standard Menu</div>
+                    </td>
+                    <td className="p-4 text-right text-on-surface-variant">450 @ 1,200</td>
+                    <td className="p-4 text-right font-currency-num text-on-surface font-medium">PKR 540,000</td>
+                  </tr>
+                  <tr>
+                    <td className="p-4">
+                      <div className="font-medium text-on-surface">Premium Floral Decor Add-on</div>
+                    </td>
+                    <td className="p-4 text-right text-on-surface-variant">Lumpsum</td>
+                    <td className="p-4 text-right font-currency-num text-on-surface font-medium">PKR 150,000</td>
+                  </tr>
+                  <tr>
+                    <td className="p-4">
+                      <div className="font-medium text-on-surface">Sound System & DJ</div>
+                    </td>
+                    <td className="p-4 text-right text-on-surface-variant">Lumpsum</td>
+                    <td className="p-4 text-right font-currency-num text-on-surface font-medium">PKR 90,000</td>
+                  </tr>
+                </tbody>
+                <tfoot className="bg-surface-variant/20 font-bold border-t-2 border-outline-variant/50">
+                  <tr>
+                    <td className="p-4 text-right" colSpan={2}>Grand Total</td>
+                    <td className="p-4 text-right font-currency-num text-primary text-lg">PKR {booking.totalAmount.toLocaleString()}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'payments' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h3 className="font-title-lg">Payment History</h3>
+              <Button variant="primary" icon="add">Record Payment</Button>
+            </div>
+            
+            <div className="bg-surface border border-outline-variant/40 rounded-xl overflow-hidden">
+              <table className="w-full text-left border-collapse">
+                <thead className="bg-surface-variant/30 text-on-surface-variant text-sm">
+                  <tr>
+                    <th className="p-4 font-medium">Date</th>
+                    <th className="p-4 font-medium">Reference</th>
+                    <th className="p-4 font-medium">Method</th>
+                    <th className="p-4 font-medium text-right">Amount</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-outline-variant/20">
+                  {bookingPayments.map(payment => (
+                    <tr key={payment.id} className="hover:bg-surface-variant/10">
+                      <td className="p-4 text-on-surface">{payment.dateStr}</td>
+                      <td className="p-4 text-on-surface-variant font-mono text-sm">{payment.reference}</td>
+                      <td className="p-4">
+                        <Badge variant="neutral">{payment.method}</Badge>
+                      </td>
+                      <td className="p-4 text-right font-currency-num text-on-surface font-medium text-success">
+                        + PKR {payment.amount.toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                  {bookingPayments.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="p-8 text-center text-on-surface-variant">No payments recorded yet.</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'event' && (
+          <div className="max-w-2xl">
+            {event ? (
+              <div className="bg-surface border border-outline-variant/40 rounded-xl p-6 text-center">
+                <div className="w-16 h-16 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Activity className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Event is active</h3>
+                <p className="text-on-surface-variant mb-6">This booking has been converted to an operational event.</p>
+                <Button variant="primary" onClick={() => navigate(`/app/events/${event.id}`)}>Open Event Command Center</Button>
+              </div>
+            ) : (
+              <div className="bg-surface border border-outline-variant/40 rounded-xl p-6 text-center">
+                <div className="w-16 h-16 bg-surface-variant text-on-surface-variant rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CalendarIcon className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">No linked event</h3>
+                <p className="text-on-surface-variant mb-6">Convert this booking into an event to manage operations, staffing, and readiness.</p>
+                <Button variant="primary">Convert to Event</Button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Placeholders for others */}
+        {['menu', 'documents', 'activity'].includes(activeTab) && (
+          <div className="flex flex-col items-center justify-center py-20 text-on-surface-variant">
+            <h3 className="text-xl font-medium text-on-surface mb-2">{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Workspace</h3>
+            <p>Ready for integration.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
